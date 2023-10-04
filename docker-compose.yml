@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  web_app:
+    image: jsdeepakgiduthuri/goodall90
+    ports:
+      - "5055:5055"
+    depends_on:
+      - gpio_trigger
+
+  gpio_trigger:
+    image: jsdeepakgiduthuri/william76
+    ports:
+      - "5002:5002"
+    privileged: true

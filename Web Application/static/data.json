@@ -1,0 +1,3 @@
+
+
+{"serial_number": "G0004", "server_ip": "moss.estetechnology.com", "position": [43.94464, 12.73052], "read_polling_time": 1, "sync_interval_time": 1, "endpoint": {"30": {"server_id": 92, "lamps": [113]}, "31": {"server_id": 93, "lamps": [114]}, "32": {"server_id": 94, "lamps": [115]}, "33": {"server_id": 95, "lamps": [116]}, "34": {"server_id": 96, "lamps": [117]}, "35": {"server_id": 97, "lamps": [118]}, "36": {"server_id": 98, "lamps": [119]}, "37": {"server_id": 99, "lamps": [120]}, "38": {"server_id": 100, "lamps": [121]}, "39": {"server_id": 101, "lamps": [122]}, "40": {"server_id": 92, "lamps": [113]}, "41": {"server_id": 92, "lamps": [113]}}}

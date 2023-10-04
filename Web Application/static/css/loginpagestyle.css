@@ -1,0 +1,50 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(#2171F4, white); /* Background with shades of #2171F4 and white */
+}
+
+.container {
+  text-align: center;
+}
+
+
+
+.container button {
+  width: 100px;
+  background-color: #2171F4; /* Button background color */
+  color: white; /* Button text color */
+  border: none; /* Remove button border */
+  padding: 10px 20px; /* Adjust button padding as needed */
+  margin: 10px 0; /* Adjust button margin as needed */
+  cursor: pointer;
+}
+
+.container input[type="text"],
+.container input[type="password"] {
+  width: 50%; /* Adjust the width as needed */
+  background-color: white; /* Button background color */
+  color: black; /* Button text color */
+  border: none; /* Remove button border */
+  padding: 10px 20px; /* Adjust button padding as needed */
+  margin: 10px 0; /* Adjust button margin as needed */
+  cursor: text;
+  color: black;
+}
+
+.container button.login-btn {
+  width: 20%; /* Adjust the width as needed */
+}
+
+.container button.cancel-btn {
+  background-color: lightgrey; /* Cancel button background color */
+  color: #2171F4; /* Cancel button text color */
+}
+
+.imgcontainer {
+  text-align: center;
+}
+
+.imgcontainer img.avatar {
+  display: inline-block;
+  vertical-align: middle;
+}

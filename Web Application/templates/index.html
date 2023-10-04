@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Main Configuration Moss Web Server</title>
+  <link rel="stylesheet" type="text/css" href="../static/css/ByLogoColour.css">
+  <style>
+    html, body {
+      height: 99%;
+      margin: 0;
+      padding: 0;
+    }
+    .tabcontent {
+      height: 90%;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Tab links -->
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'Home')">Home</button>
+  <button class="tablinks" onclick="openTab(event, 'Modem')">Modem</button>
+  <button class="tablinks" onclick="openTab(event, 'LAN')">LAN</button>
+  <button class="tablinks" onclick="openTab(event, 'Server')">Server</button>
+  <button class="tablinks" onclick="openTab(event, 'State')">State</button>
+</div>
+
+<!-- Tab content -->
+<div id="Home" class="tabcontent">
+  <div class="section1">
+    <h3>Section 1 - Home</h3>
+    <div class="left side button">
+      <button type="help" class="help-btn">Help</button>
+      </div>
+    <img src="../static/Resources/skyyBlue.png" alt="SkyBlue Logo" class="logo">
+  </div>
+  <div class="section2">
+    <h3>Home</h3>
+    <p>Welcome to Moss Web Server</p>
+  </div>
+</div>
+
+<div id="Modem" class="tabcontent">
+  <div class="section1">
+    <h3>Section 1 - Modem</h3>
+    <div class="left side button">
+      <button type="help" class="help-btn">Help</button>
+    </div>
+    <img src="../static/Resources/skyyBlue.png" alt="SkyBlue Logo" class="logo">
+  </div>
+  <div class="section2">
+    <h2>Modem Configuration</h2>
+    <form action="/modem" method="POST">
+    <label for="enable-option">Enable Option:</label><br>
+    <input type="checkbox" id="enable-option" name="enable_option"><br><br>
+    <label for="pin-number">PIN Number:</label><br>
+    <input type="text" id="pin-number" name="pin_number" value="0000"><br><br>
+    <label for="puk-code">PUK Code:</label><br>
+    <input type="text" id="puk-code" name="puk_code" value="0000"><br><br>
+    <label for="apn">APN:</label><br>
+    <input type="text" id="apn" name="apn" value="0000"><br><br>
+    <div class="submit-button">
+      <button type="submit" class="submit-btn">Submit</button>
+    </div>
+</form>
+  </div>
+</div>
+
+<div id="LAN" class="tabcontent">
+  <div class="section1">
+    <h3>Section 1 - LAN</h3>
+    <div class="left side button">
+      <button type="help" class="help-btn">Help</button>
+    </div>
+    <img src="../static/Resources/skyyBlue.png" alt="SkyBlue Logo" class="logo">
+  </div>
+  <div id="lan-options" class="section2">
+    <h2>LAN Configuration</h2>
+    <form action="/lan" method="POST">
+      <label for="ip-address-type">Indirizzo IP:</label><br>
+      <select id="ip-address-type" name="ip_address_type">
+        <option value="static">Static</option>
+        <option value="dynamic">Dynamic</option>
+      </select><br><br>
+      <label for="ip-address">Indirizzo IP:</label><br>
+      <input type="text" id="ip-address" name="ip_address"><br><br>
+      <label for="subnet-mask">Subnet Mask:</label><br>
+      <input type="text" id="subnet-mask" name="subnet_mask"><br><br>
+      <label for="gateway">Gateway Predefinito:</label><br>
+      <input type="text" id="gateway" name="gateway"><br><br>
+      <label for="dns-server">DNS Server:</label><br>
+      <input type="text" id="dns-server" name="dns_server"><br><br>
+      <label for="dns-secondary">DNS Server Secondaio:</label><br>
+      <input type="text" id="dns-secondary" name="dns_secondary"><br><br>
+      <div class="submit-button">
+        <button type="submit" class="submit-btn">Submit</button>
+    </div>
+    </form>
+  </div>
+</div>
+
+<div id="Server" class="tabcontent">
+  <div class="section1">
+    <h3>Section 1 - Server</h3>
+    <div class="left side button">
+      <button type="help" class="help-btn">Help</button>
+    </div>
+    <img src="../static/Resources/skyyBlue.png" alt="SkyBlue Logo" class="logo">
+  </div>
+  <div class="section2">
+    <h2>Server Configuration</h2>
+    <form action="/server" method="POST">
+      <label for="ip-address-server">Indirizzo IP:</label><br>
+      <input type="text" id="ip-address-server" name="ip_address_server" value="54.171.53.242"><br><br>
+      <label for="username">Username:</label><br>
+      <input type="text" id="username" name="usernames"><br><br>
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="passwords"><br><br>
+      <div class="submit-button">
+        <button type="submit" class="submit-btn">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- existing code... -->
+
+<div id="State" class="tabcontent">
+  <div class="section1">
+    <h3>Section 1 - State</h3>
+    <div class="left side button">
+      <button type="help" class="help-btn">Help</button>
+    </div>
+    <img src="../static/Resources/skyyBlue.png" alt="SkyBlue Logo" class="logo">
+  </div>
+  <div class="section2">
+    <h2>State Configuration</h2>
+    <p>Serial Number: {{ data.serial_number }}</p>
+    <p>Server IP: {{ data.server_ip }}</p>
+    <p>Position: {{ data.position[0] }}, {{ data.position[1] }}</p>
+    <p>Read Polling Time: {{ data.read_polling_time }}</p>
+    <p>Sync Interval Time: {{ data.sync_interval_time }}</p>
+    {% for key, value in data.endpoint.items() %}
+        <h3>Endpoint {{ key }}</h3>
+        <p>Server ID: {{ value.server_id }}</p>
+        <p>Lamps: {{ value.lamps | join(', ') }}</p>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- existing code... -->
+
+
+<script src="../static/js/SecondPageScript.js"></script>
+
+
+</body>
+</html>

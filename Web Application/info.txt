@@ -1,0 +1,6 @@
+Edited on 4th October 2023,
+
+This code is able to trigger gsm module gpio pin ON and OFF.
+
+Working good untli this.
+

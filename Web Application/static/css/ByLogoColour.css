@@ -1,0 +1,200 @@
+/* CSS for the page */
+body {
+  height: 100%;
+  background-color: #B2DFFC;
+  margin: 0;
+  padding: 0;
+  color: #000;
+  font-family: Arial, sans-serif;
+}
+
+/* CSS for the tabs */
+.tab {
+  overflow: hidden;
+  background-color: #2171F4;
+  display: flex;
+  width: 100%;
+}
+
+/* Style the tab buttons */
+.tab button {
+  flex: 1;
+  background-color: #2171F4;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+  color: #fff;
+}
+
+/* Change background color of the tab buttons when hovered */
+.tab button:hover {
+  background-color: #1C60E5;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #3890FF;
+  color: #000;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  height: 100%;
+  padding: 6px 12px;
+  border: 1px solid #2171F4;
+  border-top: none;
+  width: 100%;
+  display: flex;
+  background-color: #fff;
+}
+
+/* First section within the tab
+.section1 {
+  width: 19%;
+  background-color: #2171F4;
+  color: #fff;
+}
+*/
+
+
+.section1 {
+  width: 18%;
+  background-color: #2171F4;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /*flex-start;  Aligned items to start */
+  padding: 10px; /* Add padding to ensure button is not stuck to the edge */
+}
+
+
+/* Second section within the tab */
+.section2 {
+  width: 82%;
+  padding: 10px;
+  overflow: auto;  /* Add this line */
+}
+
+/* Styling for the options */
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.option {
+  flex: 0 0 50%;
+  padding: 5px;
+}
+
+.option label {
+  display: block;
+  margin-top: 10px;
+  color: #000;
+}
+
+.option input[type="text"],
+.option select {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  background-color: #2171F4;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background-color: #1C60E5;
+}
+
+.left-side-button {
+      margin-top: 10px;
+      text-align: left;
+    }
+
+    .help-btn {
+      padding: 10px 50px;
+      background-color: #fff;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      color: black;
+      font-size: 16px;
+      margin-top: 1vh;
+      margin-bottom: 60vh    /*600px;*/
+    }
+
+    .help-btn:hover {
+      background-color: #1C60E5;
+    }
+
+#lan-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.submit-button-1 {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.submit-btn-1 {
+  padding: 10px 20px;
+  background-color: #2171F4;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 16px;
+}
+
+.submit-btn-1:hover {
+  background-color: #1C60E5;
+}
+
+.section2 {
+  position: relative;
+}
+
+.param-label {
+  display: inline-block;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.param-value {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 17px;
+}
+
+/*
+.logo {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 300px;
+  height: auto;
+  transform: translate(-5%, -50%);
+}
+*/
+
+.logo {
+  align-self: center;
+  margin-top: 2vh;
+  width: 200px;
+  height: 200px-; /*auto;*/
+}
