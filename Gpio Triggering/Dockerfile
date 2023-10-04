@@ -18,4 +18,4 @@ EXPOSE 5002
 # ENV VARIABLE_NAME variable_value
 
 # Run main.py when the container launches
-CMD ["python", "test4.py"]
+CMD ["python", "main.py"]

@@ -13,7 +13,6 @@ app = Flask(__name__)
 db_path = os.path.join(os.path.dirname(__file__), 'app.db')
 db_uri = 'sqlite:///{}'.format(db_path)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-#DARWIN_URL = os.environ.get('DARWIN_URL')
 
 
 @app.route('/')
@@ -29,7 +28,7 @@ migrate = Migrate(app, db)
 def second_page():
     with open('static/data.json', 'r') as file:
         data = json.load(file)
-    return render_template('index.html', data=data)
+    return render_template('mainhomepage.html', data=data)
 
 
 class Modem(db.Model):
@@ -66,18 +65,18 @@ def modem_config():
     print("enable_option:", enable_option)
     if enable_option == 'on':
         try:
-            requests.get("http://gpio_trigger:5002/run_script2")
+            requests.get("http://gpio_trigger:5002/to_turn_on")
             return render_template('gsm_on.html')
         except Exception as e:
             logging.error(f"Failed to trigger gpio_trigger: {str(e)}")
-            return render_template('gsm_off.html')
+            return render_template('gsm_exception.html')
     else:
         try:
-            requests.get("http://gpio_trigger:5002/turn_off")
+            requests.get("http://gpio_trigger:5002/to_turn_off")
             return render_template('gsm_off.html')
         except Exception as e:
             logging.error(f"Failed to trigger gpio_trigger: {str(e)}")
-            return render_template('gsm_off.html')
+            return render_template('gsm_exception.html')
 
 
 @app.route('/lan', methods=['POST'])
