@@ -24,11 +24,11 @@ function openTab(evt, optionName) {
       .then(data => displayStateParams(data))
       .catch(error => console.log(error));
   }
-
 }
+
 // Wait for the document to be fully loaded
 document.addEventListener("DOMContentLoaded", function() {
-  // Get the input elements.
+  // Get the input elements for the IP address
   var ipAddressSelect = document.getElementById("ip-address-type");
   var ipAddressInput = document.getElementById("ip-address");
   var subnetMaskInput = document.getElementById("subnet-mask");
@@ -53,8 +53,16 @@ document.addEventListener("DOMContentLoaded", function() {
       dnsSecondaryInput.disabled = false;
     }
   });
-});
 
+  // Add event listener for the "Add APN" button
+  var addApnButton = document.getElementById("add-apn");
+  if (addApnButton) {
+    addApnButton.addEventListener("click", function() {
+      // Redirect to the 'add_apn.html' page
+      window.location.href = "/add_apn";
+    });
+  }
+});
 
 function displayStateParams(data) {
   var stateParamsContainer = document.getElementById("stateParamsContainer");

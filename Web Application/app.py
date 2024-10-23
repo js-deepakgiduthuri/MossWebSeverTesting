@@ -4,7 +4,9 @@ from flask_migrate import Migrate
 import os
 import json
 import requests
+import subprocess
 import logging
+
 
 
 app = Flask(__name__)
@@ -30,6 +32,11 @@ def second_page():
         data = json.load(file)
     return render_template('mainhomepage.html', data=data)
 
+'''@app.route('/add_apn')
+def add_apn():
+
+    return render_template('add_apn.html')'''
+
 
 class Modem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -47,6 +54,13 @@ class Lan(db.Model):
     gateway = db.Column(db.String(64))
     dns_server = db.Column(db.String(64))
     dns_secondary = db.Column(db.String(64))
+
+
+# Add a new model for APN
+class APN(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sim_name = db.Column(db.String(64))
+    apn = db.Column(db.String(64))
 
 
 class Server(db.Model):
@@ -79,6 +93,65 @@ def modem_config():
             return render_template('gsm_exception.html')
 
 
+'''@app.route('/add_apn', methods=['GET', 'POST'])
+def add_apn():
+    if request.method == 'POST':
+        apn_name = request.form['apn']  # Get the APN from the form
+        sim_name = request.form['sim_name']  # Get the SIM name from the form
+
+        # Construct the Docker command
+        docker_command = [
+            'docker', 'run', '--rm', '-v', '/etc:/etc',
+            'jsdeepakgiduthuri/curie57:latest',
+            'python', '/app/main.py', sim_name, apn_name
+        ]
+
+        try:
+            # Run the Docker container with the provided APN and SIM name
+            result = subprocess.run(docker_command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+            # Log the output
+            logging.info(result.stdout.decode())
+            return render_template('success_apn.html')  # Redirect to a success page
+        except subprocess.CalledProcessError as e:
+            logging.error(f"Error running Docker container: {e.stderr.decode()}")
+            return render_template('error_apn.html', error=str(e))
+
+    return render_template('add_apn.html')'''
+
+@app.route('/add_apn', methods=['GET', 'POST'])
+def add_apn():
+    if request.method == 'POST':
+        # Validate and retrieve form data
+        apn_name = request.form.get('apn')  # Get the APN from the form
+        sim_name = request.form.get('sim_name')  # Get the SIM name from the form
+
+        if not apn_name or not sim_name:
+            return render_template('gsm_exception.html', error="SIM Name and APN must be provided.")
+
+        # Add the APN config to the database
+        try:
+            config = APN(apn=apn_name, sim_name=sim_name)
+            db.session.add(config)
+            db.session.commit()
+
+            # Make a request to the modify_shell service to trigger the shell script
+            modify_url = f"http://modify_shell:5010/to_turn_on?sim_name={sim_name}&apn_name={apn_name}"
+            response = requests.get(modify_url)
+
+            if response.status_code == 200:
+                return render_template('gsm_on.html')  # Success page
+            else:
+                logging.error(f"Failed to modify shell script. Status code: {response.status_code}, Response: {response.text}")
+                return render_template('gsm_exception.html', error="Failed to modify shell script.")
+
+        except Exception as e:
+            logging.error(f"Failed to trigger shell modification: {str(e)}")
+            return render_template('gsm_exception.html', error=str(e))
+
+    return render_template('add_apn.html')  # Render the form for GET requests
+
+
 @app.route('/lan', methods=['POST'])
 def lan_config():
     config = Lan(**request.form)
@@ -99,6 +172,5 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()  # Add this line to create all tables
     app.run(host='0.0.0.0', port=5055, debug=True)
-
 
 
