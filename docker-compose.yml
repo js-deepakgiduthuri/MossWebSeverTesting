@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web_app:
-    image: jsdeepakgiduthuri/moss_web_application_image
+    image: jsdeepakgiduthuri/web_application5
     ports:
       - "5055:5055"
     depends_on:
@@ -15,17 +15,13 @@ services:
     ports:
       - "5002:5002"
     privileged: true
+    #restart: always  # Optional: Automatically restart the container on failure
 
   modify_shell:
-    image: jsdeepakgiduthuri/modify_shell_script_image
+    image: jsdeepakgiduthuri/modify_shell_script2
     ports:
       - "5010:5010"
     privileged: true
     volumes:
       - /etc:/etc  # Map etc directory for shell script modification
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5010/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
     restart: always  # Optional: Automatically restart the container on failure

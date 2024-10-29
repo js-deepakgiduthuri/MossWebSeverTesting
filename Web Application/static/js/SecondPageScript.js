@@ -62,6 +62,15 @@ document.addEventListener("DOMContentLoaded", function() {
       window.location.href = "/add_apn";
     });
   }
+
+  // Add event listener for the "Remove APN" button
+  var removeApnButton = document.getElementById("remove-apn");
+  if (removeApnButton) {
+    removeApnButton.addEventListener("click", function() {
+      // Redirect to the 'remove_apn.html' page
+      window.location.href = "/remove_apn";
+    });
+  }
 });
 
 function displayStateParams(data) {
@@ -99,9 +108,4 @@ function displayStateParams(data) {
     stateParamsContainer.appendChild(lineBreak);
   }
 }
-
-
-
-
-
 

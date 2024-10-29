@@ -4,9 +4,7 @@ from flask_migrate import Migrate
 import os
 import json
 import requests
-import subprocess
 import logging
-
 
 
 app = Flask(__name__)
@@ -31,11 +29,6 @@ def second_page():
     with open('static/data.json', 'r') as file:
         data = json.load(file)
     return render_template('mainhomepage.html', data=data)
-
-'''@app.route('/add_apn')
-def add_apn():
-
-    return render_template('add_apn.html')'''
 
 
 class Modem(db.Model):
@@ -93,64 +86,50 @@ def modem_config():
             return render_template('gsm_exception.html')
 
 
-'''@app.route('/add_apn', methods=['GET', 'POST'])
-def add_apn():
-    if request.method == 'POST':
-        apn_name = request.form['apn']  # Get the APN from the form
-        sim_name = request.form['sim_name']  # Get the SIM name from the form
-
-        # Construct the Docker command
-        docker_command = [
-            'docker', 'run', '--rm', '-v', '/etc:/etc',
-            'jsdeepakgiduthuri/curie57:latest',
-            'python', '/app/main.py', sim_name, apn_name
-        ]
-
-        try:
-            # Run the Docker container with the provided APN and SIM name
-            result = subprocess.run(docker_command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-            # Log the output
-            logging.info(result.stdout.decode())
-            return render_template('success_apn.html')  # Redirect to a success page
-        except subprocess.CalledProcessError as e:
-            logging.error(f"Error running Docker container: {e.stderr.decode()}")
-            return render_template('error_apn.html', error=str(e))
-
-    return render_template('add_apn.html')'''
-
 @app.route('/add_apn', methods=['GET', 'POST'])
 def add_apn():
     if request.method == 'POST':
-        # Validate and retrieve form data
-        apn_name = request.form.get('apn')  # Get the APN from the form
-        sim_name = request.form.get('sim_name')  # Get the SIM name from the form
+        sim_name = request.form.get('sim_name')
+        apn_name = request.form.get('apn')
 
-        if not apn_name or not sim_name:
-            return render_template('gsm_exception.html', error="SIM Name and APN must be provided.")
+        if not sim_name or not apn_name:
+            return render_template('gsm_exception.html', error="Both SIM Name and APN must be provided.")
 
-        # Add the APN config to the database
         try:
-            config = APN(apn=apn_name, sim_name=sim_name)
+            config = APN(sim_name=sim_name, apn=apn_name)
             db.session.add(config)
             db.session.commit()
-
-            # Make a request to the modify_shell service to trigger the shell script
-            modify_url = f"http://modify_shell:5010/to_turn_on?sim_name={sim_name}&apn_name={apn_name}"
-            response = requests.get(modify_url)
-
-            if response.status_code == 200:
-                return render_template('gsm_on.html')  # Success page
-            else:
-                logging.error(f"Failed to modify shell script. Status code: {response.status_code}, Response: {response.text}")
-                return render_template('gsm_exception.html', error="Failed to modify shell script.")
-
+            requests.get(f"http://modify_shell:5010/to_turn_on?sim_name={sim_name}&apn_name={apn_name}")
+            return render_template('gsm_on.html')
         except Exception as e:
-            logging.error(f"Failed to trigger shell modification: {str(e)}")
+            logging.error(f"Failed to modify shell script: {str(e)}")
             return render_template('gsm_exception.html', error=str(e))
 
-    return render_template('add_apn.html')  # Render the form for GET requests
+    return render_template('add_apn.html')
 
+
+@app.route('/remove_apn', methods=['GET', 'POST'])
+def remove_apn():
+    if request.method == 'POST':
+        sim_name = request.form.get('sim_name')
+
+        if not sim_name:
+            return render_template('gsm_exception.html', error="SIM Name must be provided.")
+
+        try:
+            apn_entry = APN.query.filter_by(sim_name=sim_name).first()
+            if apn_entry:
+                db.session.delete(apn_entry)
+                db.session.commit()
+                requests.get(f"http://modify_shell:5010/remove_apn?sim_name={sim_name}")
+                return render_template('gsm_on.html')
+            else:
+                return render_template('gsm_exception.html', error="No APN found for the given SIM name.")
+        except Exception as e:
+            logging.error(f"Failed to remove APN: {str(e)}")
+            return render_template('gsm_exception.html', error=str(e))
+
+    return render_template('remove_apn.html')
 
 @app.route('/lan', methods=['POST'])
 def lan_config():
