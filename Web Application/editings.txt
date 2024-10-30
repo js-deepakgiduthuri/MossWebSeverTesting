@@ -1,0 +1,9 @@
+  // Add event listener for the "Remove APN" button
+  var addApnButton = document.getElementById("remove-apn");
+  if (addApnButton) {
+    addApnButton.addEventListener("click", function() {
+      // Redirect to the 'add_apn.html' page
+      window.location.href = "/remove_apn";
+    });
+  }
+});
