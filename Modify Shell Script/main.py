@@ -81,5 +81,25 @@ def remove_apn_function():
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 
+@app.route('/get_apn', methods=['GET'])
+def get_apn():
+    try:
+        with open('/etc/modem_autoconnect.sh', 'r') as main_script:
+            raw1 = main_script.read()
+
+        apn_dict = raw1.split('declare -A sim_apn_dict=(\n')[1].split('#enddict')[0].split('\n')
+        sims_list = {apn_parse(apn)[0]: apn_parse(apn)[1] for apn in apn_dict if '[' in apn}
+
+        logging.info(f"Returning APN list: {sims_list}")
+        return jsonify(sims_list), 200
+    except FileNotFoundError as fnf_error:
+        logging.error(f"File error: {str(fnf_error)}")
+        return jsonify({"error": f"File error: {str(fnf_error)}"}), 500
+    except Exception as e:
+        logging.error(f"An error occurred: {str(e)}")
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
+
 if __name__ == "__main__":
     app.run(port=5010, host='0.0.0.0')
+

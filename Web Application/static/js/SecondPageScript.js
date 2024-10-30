@@ -24,6 +24,14 @@ function openTab(evt, optionName) {
       .then(data => displayStateParams(data))
       .catch(error => console.log(error));
   }
+
+  if (optionName === "APNs") {
+    // Fetch the available APNs
+    fetch('/get_apn')
+      .then(response => response.json())
+      .then(data => populateApnDropdown(data))
+      .catch(error => console.log(error));
+  }
 }
 
 // Wait for the document to be fully loaded
@@ -106,6 +114,21 @@ function displayStateParams(data) {
 
     var lineBreak = document.createElement("br");
     stateParamsContainer.appendChild(lineBreak);
+  }
+}
+
+function populateApnDropdown(apnData) {
+  var apnDropdown = document.getElementById("apn-dropdown");
+
+  // Clear existing options
+  apnDropdown.innerHTML = "";
+
+  // Populate dropdown with APN data
+  for (var key in apnData) {
+    var option = document.createElement("option");
+    option.value = key;
+    option.textContent = key + ": " + apnData[key];
+    apnDropdown.appendChild(option);
   }
 }
 
